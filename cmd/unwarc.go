@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"ioutil"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -29,7 +29,7 @@ func main() {
 		if *target != "" {
 			dir = *target
 		} else {
-			dir = Base(v)
+			dir = unwarc.Base(v)
 		}
 		f, err := os.Open(v)
 		if err != nil {
@@ -44,7 +44,7 @@ func main() {
 			log.Fatal(err)
 		}
 		for record, err := rdr.NextPayload(); err == nil; record, err = rdr.NextPayload() {
-			rel, fn := unwarc.Base(record.URL())
+			rel, fn := unwarc.Sanitise(record.URL())
 			if rel == "" {
 				rel = dir
 			} else {
