@@ -1,0 +1,1 @@
+A simple package for extracting files from WARCS and ARCS. Based on [github.com/richardlehane/webarchive](https://github.com/richardlehane/webarchive).
