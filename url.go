@@ -24,7 +24,11 @@ func Sanitise(str string) (string, string) {
 		str = repl.Replace(str)
 	}
 	str = filepath.FromSlash(str)
-	return filepath.Split(str)
+	dir, fn := filepath.Split(str)
+	if len(fn) > 255 {
+		fn = fn[:255]
+	}
+	return dir, fn
 }
 
 // takes a path like blackbooks.warc.gz and gives blackbooks

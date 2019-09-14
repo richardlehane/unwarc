@@ -50,12 +50,33 @@ func main() {
 			} else {
 				rel = filepath.Join(dir, rel)
 			}
-			if err := os.MkdirAll(rel, 0666); err != nil {
-				log.Fatal(err)
+			if err := os.MkdirAll(rel, os.ModePerm); err != nil {
+				in, err := os.Open(rel)
+				if err != nil {
+					log.Fatal(err)
+				}
+				ind, inf := filepath.Split(rel)
+				cp, err := os.Create(filepath.Join(ind, "_"+inf))
+				if err != nil {
+					log.Fatal(err)
+				}
+				_, err = io.Copy(cp, in)
+				if err != nil {
+					log.Fatal(err)
+				}
+				in.Close()
+				cp.Close()
+				os.Remove(rel)
+				if err := os.MkdirAll(rel, os.ModePerm); err != nil {
+					log.Fatal(err)
+				}
 			}
 			out, err := os.Create(filepath.Join(rel, fn))
 			if err != nil {
-				log.Fatal(err)
+				out, err = os.Create(filepath.Join(rel, "_"+fn))
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
 			_, err = io.Copy(out, record)
 			if err != nil {
