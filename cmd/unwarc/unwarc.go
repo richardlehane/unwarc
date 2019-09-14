@@ -50,7 +50,7 @@ func main() {
 			} else {
 				rel = filepath.Join(dir, rel)
 			}
-			if err := os.MkdirAll(rel, 0700); err != nil {
+			if err := os.MkdirAll(rel, 0666); err != nil {
 				log.Fatal(err)
 			}
 			out, err := os.Create(filepath.Join(rel, fn))

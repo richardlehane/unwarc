@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+var repl = strings.NewReplacer(":", "_")
+
 // takes a URL path and returns directory, filename
 func Sanitise(str string) (string, string) {
 	u, err := url.Parse(str)
@@ -18,6 +20,8 @@ func Sanitise(str string) (string, string) {
 		if u.Fragment != "" {
 			str = str + "_" + u.Fragment
 		}
+	} else {
+		str = repl.Replace(str)
 	}
 	str = filepath.FromSlash(str)
 	return filepath.Split(str)
