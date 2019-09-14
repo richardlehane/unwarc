@@ -1,4 +1,4 @@
-package unwarc
+package sanitise
 
 import "testing"
 
